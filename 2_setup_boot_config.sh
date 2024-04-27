@@ -108,7 +108,7 @@ root_uuid=$(blkid -o value -s UUID ${ROOT_PARTITION})
 mkdir -p /boot/EFI/Shell
 cp /usr/share/edk2-shell/x64/Shell.efi /boot/EFI/Shell/shellx64.efi
 
-echo "${efi_boot_id}:EFI/Boot/bootx64.efi" > /boot/windows.nsh
+echo "${efi_boot_id}:EFI\Boot\bootx64.efi" > /boot/windows.nsh
 
 cat <<EOF > /boot/loader/loader.conf
 default       69-arch.conf
