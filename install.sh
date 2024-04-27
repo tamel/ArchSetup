@@ -1,4 +1,5 @@
 #!/bin/bash
+clear
 
 cat <<'END_ASCII'
     _             _       ___           _        _ _ 
@@ -45,14 +46,30 @@ ROOT_PARTITION=/dev/sdb5
 
 check_continue "This script installs a base arch system"
 
+#################################################
+#  _____ ___ __  __ _____ ________  _   _ _____
+# |_   _|_ _|  \/  | ____|__  / _ \| \ | | ____|
+#   | |  | || |\/| |  _|   / / | | |  \| |  _|
+#   | |  | || |  | | |___ / /| |_| | |\  | |___
+#   |_| |___|_|  |_|_____/____\___/|_| \_|_____|
+#################################################
+
 echo
 echo "setting timezone"
 timedatectl set-local-rtc 1
 timedatectl set-timezone Europe/Berlin
 
+##########################################################
+#  ____   _    ____ _____ ___ _____ ___ ___  _   _ ____
+# |  _ \ / \  |  _ \_   _|_ _|_   _|_ _/ _ \| \ | / ___|
+# | |_) / _ \ | |_) || |  | |  | |  | | | | |  \| \___ \
+# |  __/ ___ \|  _ < | |  | |  | |  | | |_| | |\  |___) |
+# |_| /_/   \_\_| \_\|_| |___| |_| |___\___/|_| \_|____/
+##########################################################
+
 echo
 echo "these are your current partitions:"
-lsblk 2>/dev/null || echo "!!!! lsblk was not found.. !!!!"
+lsblk -o NAME,SIZE,TYPE,FSTYPE 2>/dev/null || echo "!!!! lsblk was not found.. !!!!"
 
 echo
 echo "echo make sure you have the following partitions setup like this:"
@@ -75,3 +92,36 @@ echo "DONE"
 echo "FORMATING ROOT PARTITION"
 mkfs.ext4 ${ROOT_PARTITION}
 echo "DONE"
+
+echo "here are your new partitions:"
+echo
+lsblk -o NAME,SIZE,TYPE,FSTYPE 2>/dev/null || echo "!!!! lsblk was not found.. !!!!"
+
+############################################
+#  ___ _   _ ____ _____  _    _     _
+# |_ _| \ | / ___|_   _|/ \  | |   | |
+#  | ||  \| \___ \ | | / _ \ | |   | |
+#  | || |\  |___) || |/ ___ \| |___| |___
+# |___|_| \_|____/ |_/_/   \_\_____|_____|
+############################################
+
+echo "Mounting filesystems to /mnt"
+mount ${ROOT_PARTITION} /mnt
+mount --mkdir ${EFI_PARTITION} /mnt/boot
+swapon ${SWAP_PARTITION}
+
+echo "Installing arch base system"
+pacstrap -K /mnt base base-devel git linux linux-firmware vim openssh reflector intel-ucode
+
+echo "Generating fstab"
+genfstab -U /mnt >> /mnt/etc/fstab
+echo
+echo "Here is the genereted fstab"
+cat /mnt/etc/fstab
+echo
+echo
+check_continue "Does the fstab look alright?"
+
+
+echo "arch-chroot to /mnt"
+arch-chroot /mnt
