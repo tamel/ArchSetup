@@ -116,7 +116,7 @@ pacstrap -K /mnt base base-devel git linux linux-firmware vim openssh reflector 
 echo "Generating fstab"
 genfstab -U /mnt >> /mnt/etc/fstab
 echo
-echo "Here is the genereted fstab"
+echo "Here is the generated fstab"
 cat /mnt/etc/fstab
 echo
 echo
