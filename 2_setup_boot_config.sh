@@ -141,21 +141,3 @@ cat <<EOF > /boot/loader/entries/49-shell.conf
 title     Shell
 efi       /EFI/Shell/shellx64.efi
 EOF
-
-pacman -S --noconfirm sbctl
-
-sbctl status
-check_continue "make sure that setup mode is enabled. If not, enable it in the BIOS"
-
-sbctl create-keys
-sbctl enroll-keys -m
-sbctl sign -s -o /usr/lib/systemd/boot/efi/systemd-bootx64.efi.signed /usr/lib/systemd/boot/efi/systemd-bootx64.efi
-sbctl sign -s /boot/vmlinuz-linux
-sbctl sign -s /boot/EFI/Shell/shellx64.efi
-bootctl install
-sbctl verify
-check_continue "all boot files should be signed"
-
-echo "now enable secure boot again"
-echo "drop arch-chroot via exit"
-echo "run 'systemctl reboot --firmware-setup'"
