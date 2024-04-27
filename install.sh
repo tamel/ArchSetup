@@ -67,11 +67,11 @@ EOF
 echo
 check_continue "listed partitions will be formated"
 echo "FORMATING EFI PARTITION"
-echo "mkfs.fat -F 32 ${EFI_PARTITION}"
+mkfs.fat -F 32 ${EFI_PARTITION}
 echo "DONE"
 echo "FORMATING SWAP PARTITION"
-echo "mkswap ${SWAP_PARTITION}"
+mkswap ${SWAP_PARTITION}
 echo "DONE"
 echo "FORMATING ROOT PARTITION"
-echo "mkfs.ext4 ${ROOT_PARTITION}"
+mkfs.ext4 ${ROOT_PARTITION}
 echo "DONE"
