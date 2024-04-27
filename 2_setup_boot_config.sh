@@ -78,16 +78,16 @@ systemctl enable sshd
 #  \___/|____/|_____|_| \_\     \____\___/|_| \_|_|   |___\____|
 ##################################################################
 
-# echo "set root password"
-# passwd
-#
-# echo "allowing wheel group to use sudo"
-# sed -i -e 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
-#
-# check_continue "setting up local user ${archUsername}"
-# useradd -m -G wheel ${archUsername}
-# echo "setting password for user ${archUsername}"
-# passwd ${archUsername}
+echo "set root password"
+passwd
+
+echo "allowing wheel group to use sudo"
+sed -i -e 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
+
+check_continue "setting up local user ${archUsername}"
+useradd -m -G wheel ${archUsername}
+echo "setting password for user ${archUsername}"
+passwd ${archUsername}
 
 ################################################################
 #  ____   ___   ___ _____ _     ___    _    ____  _____ ____  
