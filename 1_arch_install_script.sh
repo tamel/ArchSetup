@@ -111,6 +111,7 @@ echo
 echo
 check_continue "Does the fstab look alright?"
 
+cp 2_setup_boot_config.sh /mnt
 
 echo "arch-chroot to /mnt"
-arch-chroot /mnt
+arch-chroot /mnt ./2_setup_boot_config.sh
