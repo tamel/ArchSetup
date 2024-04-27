@@ -131,5 +131,5 @@ EOF
 
 cat <<EOF > /boot/loader/entries/49-shell.conf
 title     Shell
-efi       /boot/EFI/Shell/shellx64.efi
+efi       /EFI/Shell/shellx64.efi
 EOF
