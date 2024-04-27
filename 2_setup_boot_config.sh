@@ -54,7 +54,7 @@ ln -sf /usr/share/zoneinfo/Europe/Berlin /etc/localtime
 
 echo "generating localization"
 
-echo "sed -i -e 's/#${fullLocale}/${fullLocale}/' /etc/locale.gen"
+sed -i -e 's/#${fullLocale}/${fullLocale}/' /etc/locale.gen
 locale-gen                                                                    
 echo "LANG=${chosenLocale}" > /etc/locale.conf
 echo "KEYMAP=${keymap}" > /etc/vconsole.conf
