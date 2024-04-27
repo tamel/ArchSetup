@@ -70,6 +70,24 @@ EOF
 systemctl enable NetworkManager
 systemctl enable sshd
 
+##################################################################
+#  _   _ ____  _____ ____        ____ ___  _   _ _____ ___ ____ 
+# | | | / ___|| ____|  _ \      / ___/ _ \| \ | |  ___|_ _/ ___|
+# | | | \___ \|  _| | |_) |____| |  | | | |  \| | |_   | | |  _ 
+# | |_| |___) | |___|  _ <_____| |__| |_| | |\  |  _|  | | |_| |
+#  \___/|____/|_____|_| \_\     \____\___/|_| \_|_|   |___\____|
+##################################################################
+
+# echo "set root password"
+# passwd
+#
+# echo "allowing wheel group to use sudo"
+# sed -i -e 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
+#
+# check_continue "setting up local user ${archUsername}"
+# useradd -m -G wheel ${archUsername}
+# echo "setting password for user ${archUsername}"
+# passwd ${archUsername}
 
 ##########################################################################
 #  ____   ___   ___ _____ __  __    _    _   _    _    ____ _____ ____  
@@ -82,20 +100,36 @@ systemctl enable sshd
 echo "setting up the bootloader"
 bootctl install
 
+pacman -S --noconfirm edk2-shell
+
 systemctl enable systemd-boot-update.service
 root_uuid=$(blkid -o value -s UUID ${ROOT_PARTITION})
  
+mkdir -p /boot/EFI/Shell
+cp /usr/share/edk2-shell/x64/Shell.efi /boot/EFI/Shell/shellx64.efi
 
 cat <<EOF > /boot/loader/loader.conf
-default       arch.conf
+default       69-arch.conf
 timeout       4
 console-mode  max
 editor        no
 EOF
 
-cat <<EOF > /boot/loader/entries/arch.conf
+cat <<EOF > /boot/loader/entries/69-arch.conf
 title     Arch Linux
 linux     /vmlinuz-linux
 initrd    /initramfs-linux.img
 options   root=UUID=${root_uuid} rw
+EOF
+
+cat <<EOF > /boot/loader/entries/65-arch-fallback.conf
+title     Arch Linux (fallback initramfs)
+linux     /vmlinuz-linux
+initrd    /initramfs-linux-fallback.img
+options   root=UUID=${root_uuid} rw
+EOF
+
+cat <<EOF > /boot/loader/entries/49-shell.conf
+title     Shell
+efi       /boot/EFI/Shell/shellx64.efi
 EOF
