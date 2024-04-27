@@ -43,7 +43,6 @@ hostName=arch-msi
 
 echo "setting correct timezone"
 ln -sf /usr/share/zoneinfo/Europe/Berlin /etc/localtime
-timedatectl set-local-rtc 1
 
 ########################################################################
 #  _     ___   ____    _    _     ___ _____   _  _____ ___ ___  _   _ 
@@ -55,7 +54,7 @@ timedatectl set-local-rtc 1
 
 echo "generating localization"
 
-sed -i -e 's/#${fullLocale}/${fullLocale}/' /etc/locale.gen
+echo "sed -i -e 's/#${fullLocale}/${fullLocale}/' /etc/locale.gen"
 locale-gen                                                                    
 echo "LANG=${chosenLocale}" > /etc/locale.conf
 echo "KEYMAP=${keymap}" > /etc/vconsole.conf
