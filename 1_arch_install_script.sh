@@ -1,6 +1,10 @@
 #!/bin/bash
 clear
 
+cd $(dirname $0)
+source check_continue 
+source config 
+
 cat <<'END_ASCII'
     _             _       ___           _        _ _ 
    / \   _ __ ___| |__   |_ _|_ __  ___| |_ __ _| | |
@@ -15,22 +19,6 @@ cat <<'END_ASCII'
 |____/ \___|_|  |_| .__/ \__|
                   |_|        
 END_ASCII
-
-check_continue() {
-  local message=$1
-
-  echo "${message}"
-  read -p "Are you sure you want to continue? (y/N): " continueCheck
-
-  case $continueCheck in
-    y)
-      ;;
-    *)
-      echo "Aborting arch installation"
-      exit 0
-      ;;
-  esac
-}
 
 ############################################
 #   ____ ___  _   _ _____ ___ ____ ____  
@@ -115,6 +103,7 @@ pacstrap -K /mnt base base-devel git linux linux-firmware vim openssh reflector 
 
 echo "Generating fstab"
 genfstab -U /mnt >> /mnt/etc/fstab
+sed -i -e "s/fmask=\([[:digit:]]\)\{4\},dmask=\([[:digit:]]\)\{4\}/fmask=0077,dmask=0077/" /etc/fstab
 echo
 echo "Here is the generated fstab"
 cat /mnt/etc/fstab

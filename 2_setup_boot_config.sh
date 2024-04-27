@@ -2,7 +2,8 @@
 clear
 
 cd $(dirname $0)
-source check_continue.mod 
+source check_continue 
+source config
 
 cat <<EOF
  ____  _____ _____ _   _ ____    ____   ___   ___ _____ 
@@ -19,19 +20,6 @@ cat <<EOF
 EOF
 
 check_continue "This script sets up the bootloader with secure boot and dualboot to windows + an ssh server"
-
-############################################
-#   ____ ___  _   _ _____ ___ ____ ____  
-#  / ___/ _ \| \ | |  ___|_ _/ ___/ ___| 
-# | |  | | | |  \| | |_   | | |  _\___ \ 
-# | |__| |_| | |\  |  _|  | | |_| |___) |
-#  \____\___/|_| \_|_|   |___\____|____/ 
-############################################
-
-chosenLocale=en_US.UTF-8
-fullLocale="${chosenLocale} UTF-8"
-keymap=de-latin1
-hostName=arch-msi
 
 #################################################
 #  _____ ___ __  __ _____ ________  _   _ _____
@@ -69,7 +57,7 @@ echo "KEYMAP=${keymap}" > /etc/vconsole.conf
 
 echo "network configuration"
 
-pacman -S networkmanager
+pacman -S --noconfirm networkmanager
 
 echo $hostName >> /etc/hostname
                                               
@@ -80,4 +68,34 @@ cat <<EOF > /etc/hosts
 EOF
 
 systemctl enable NetworkManager
+systemctl enable sshd
 
+
+##########################################################################
+#  ____   ___   ___ _____ __  __    _    _   _    _    ____ _____ ____  
+# | __ ) / _ \ / _ \_   _|  \/  |  / \  | \ | |  / \  / ___| ____|  _ \ 
+# |  _ \| | | | | | || | | |\/| | / _ \ |  \| | / _ \| |  _|  _| | |_) |
+# | |_) | |_| | |_| || | | |  | |/ ___ \| |\  |/ ___ \ |_| | |___|  _ < 
+# |____/ \___/ \___/ |_| |_|  |_/_/   \_\_| \_/_/   \_\____|_____|_| \_\
+##########################################################################
+
+echo "setting up the bootloader"
+bootctl install
+
+systemctl enable systemd-boot-update.service
+root_uuid=$(blkid -o value -s UUID ${ROOT_PARTITION})
+ 
+
+cat <<EOF > /boot/loader/loader.conf
+default       arch.conf
+timeout       4
+console-mode  max
+editor        no
+EOF
+
+cat <<EOF > /boot/loader/entries/arch.conf
+title     Arch Linux
+linux     /vmlinuz-linux
+initrd    /initramfs-linux.img
+options   root=UUID=${root_uuid} rw
+EOF
