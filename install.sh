@@ -16,7 +16,7 @@ cat <<'END_ASCII'
 END_ASCII
 
 check_continue() {
-  local message=$0
+  local message=$1
 
   echo "${message}"
   read -p "Are you sure you want to continue? (y/N): " continueCheck
@@ -47,8 +47,8 @@ check_continue "This script installs a base arch system"
 
 echo
 echo "setting timezone"
-timedatectl --set-local-rtc 1
-timedatectl --set-timezone Europe/Berlin
+timedatectl set-local-rtc 1
+timedatectl set-timezone Europe/Berlin
 
 echo
 echo "these are your current partitions:"
