@@ -103,7 +103,7 @@ pacstrap -K /mnt base base-devel git linux linux-firmware vim openssh reflector 
 
 echo "Generating fstab"
 genfstab -U /mnt >> /mnt/etc/fstab
-sed -i -e "s/fmask=\([[:digit:]]\)\{4\},dmask=\([[:digit:]]\)\{4\}/fmask=0077,dmask=0077/" /mnt/etc/fstab
+echo "Note that the permission will be adjusted in the clean up script"
 echo
 echo "Here is the generated fstab"
 cat /mnt/etc/fstab
@@ -113,7 +113,7 @@ check_continue "Does the fstab look alright?"
 
 cp config /mnt
 cp check_continue /mnt
-cp 2_setup_boot_config.sh /mnt
+cp setup_boot_config.sh /mnt
 
 echo "arch-chroot to /mnt"
-arch-chroot /mnt ./2_setup_boot_config.sh
+arch-chroot /mnt ./setup_boot_config.sh
