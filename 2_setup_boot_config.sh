@@ -108,11 +108,19 @@ root_uuid=$(blkid -o value -s UUID ${ROOT_PARTITION})
 mkdir -p /boot/EFI/Shell
 cp /usr/share/edk2-shell/x64/Shell.efi /boot/EFI/Shell/shellx64.efi
 
+echo "${efi_boot_id}:EFI/Boot/bootx64.efi" > windows.nsh
+
 cat <<EOF > /boot/loader/loader.conf
 default       69-arch.conf
 timeout       4
 console-mode  max
 editor        no
+EOF
+
+cat <<EOF > /boot/loader/entries/89-windows.conf
+title     Windows
+efi       /EFI/Shell/shellx64.efi
+options   -nointerrupt -noconsolein -noconsoleout windows.nsh
 EOF
 
 cat <<EOF > /boot/loader/entries/69-arch.conf

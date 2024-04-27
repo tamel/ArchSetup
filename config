@@ -8,3 +8,5 @@ keymap=de-latin1
 hostName=arch-msi
 
 archUsername=thomas
+
+efi_boot_id=HD0b65535a1
