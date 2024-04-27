@@ -54,7 +54,7 @@ ln -sf /usr/share/zoneinfo/Europe/Berlin /etc/localtime
 
 echo "generating localization"
 
-sed -i -e 's/#${fullLocale}/${fullLocale}/' /etc/locale.gen
+sed -i -e "s/#${fullLocale}/${fullLocale}/" /etc/locale.gen
 locale-gen                                                                    
 echo "LANG=${chosenLocale}" > /etc/locale.conf
 echo "KEYMAP=${keymap}" > /etc/vconsole.conf
@@ -69,6 +69,8 @@ echo "KEYMAP=${keymap}" > /etc/vconsole.conf
 
 echo "network configuration"
 
+pacman -S networkmanager
+
 echo $hostName >> /etc/hostname
                                               
 cat <<EOF > /etc/hosts
@@ -76,3 +78,6 @@ cat <<EOF > /etc/hosts
 ::1         localhost ip6-localhost ip6-loopback
 127.0.0.1   ${hostName}.localdomain ${hostName}
 EOF
+
+systemctl enable NetworkManager
+
