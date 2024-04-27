@@ -31,19 +31,47 @@ check_continue() {
   esac
 }
 
-# echo "This script installs a base arch system"
-# read -p "Are you sure you want to continue? (y/N): " continueArchInstall
+############################################
+#   ____ ___  _   _ _____ ___ ____ ____  
+#  / ___/ _ \| \ | |  ___|_ _/ ___/ ___| 
+# | |  | | | |  \| | |_   | | |  _\___ \ 
+# | |__| |_| | |\  |  _|  | | |_| |___) |
+#  \____\___/|_| \_|_|   |___\____|____/ 
+############################################
+
+EFI_PARTITION=/dev/sdb3
+SWAP_PARTITION=/dev/sdb4
+ROOT_PARTITION=/dev/sdb5
 
 check_continue "This script installs a base arch system"
 
-echo ""
+echo
+echo "setting timezone"
+timedatectl --set-local-rtc 1
+timedatectl --set-timezone Europe/Berlin
+
+echo
 echo "these are your current partitions:"
 lsblk 2>/dev/null || echo "!!!! lsblk was not found.. !!!!"
 
+echo
 echo "echo make sure you have the following partitions setup like this:"
+echo
 cat << EOF | column -t
 device size type
-sdb/sdb3 512M EFI
-sdb/sdb4 16G SWAP
-sdb/sdb5 ~100G ROOT
+${EFI_PARTITION} 512M EFI
+${SWAP_PARTITION} 16G SWAP
+${ROOT_PARTITION} ~100G ROOT
 EOF
+
+echo
+check_continue "listed partitions will be formated"
+echo "FORMATING EFI PARTITION"
+echo "mkfs.fat -F 32 ${EFI_PARTITION}"
+echo "DONE"
+echo "FORMATING SWAP PARTITION"
+echo "mkswap ${SWAP_PARTITION}"
+echo "DONE"
+echo "FORMATING ROOT PARTITION"
+echo "mkfs.ext4 ${ROOT_PARTITION}"
+echo "DONE"
