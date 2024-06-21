@@ -1,6 +1,6 @@
-EFI_PARTITION=/dev/sdb3
-SWAP_PARTITION=/dev/sdb4
-ROOT_PARTITION=/dev/sdb5
+EFI_PARTITION=/dev/nvme1n1p1
+SWAP_PARTITION=/dev/nvme1n1p3
+ROOT_PARTITION=/dev/nvme1n1p2
 
 chosenLocale=en_US.UTF-8
 fullLocale="${chosenLocale} UTF-8"

@@ -103,8 +103,6 @@ bootctl install
 systemctl enable systemd-boot-update.service
 root_uuid=$(blkid -o value -s UUID ${ROOT_PARTITION})
  
-mkdir -p /boot/EFI/Shell
-cp /usr/share/edk2-shell/x64/Shell.efi /boot/EFI/Shell/shellx64.efi
 
 cat <<EOF > /boot/loader/loader.conf
 default       69-arch.conf
@@ -125,9 +123,4 @@ title     Arch Linux (fallback initramfs)
 linux     /vmlinuz-linux
 initrd    /initramfs-linux-fallback.img
 options   root=UUID=${root_uuid} rw
-EOF
-
-cat <<EOF > /boot/loader/entries/49-shell.conf
-title     Shell
-efi       /EFI/Shell/shellx64.efi
 EOF
