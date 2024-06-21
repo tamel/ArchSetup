@@ -5,8 +5,6 @@ ROOT_PARTITION=/dev/sdb5
 chosenLocale=en_US.UTF-8
 fullLocale="${chosenLocale} UTF-8"
 keymap=de-latin1
-hostName=arch-msi
+hostName=tamel-arch
 
-archUsername=thomas
-
-efi_boot_id=HD0b65535a1
+archUsername=tamel
