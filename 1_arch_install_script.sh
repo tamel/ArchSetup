@@ -20,18 +20,6 @@ cat <<EOF
                   |_|        
 EOF
 
-############################################
-#   ____ ___  _   _ _____ ___ ____ ____  
-#  / ___/ _ \| \ | |  ___|_ _/ ___/ ___| 
-# | |  | | | |  \| | |_   | | |  _\___ \ 
-# | |__| |_| | |\  |  _|  | | |_| |___) |
-#  \____\___/|_| \_|_|   |___\____|____/ 
-############################################
-
-EFI_PARTITION=/dev/sdb3
-SWAP_PARTITION=/dev/sdb4
-ROOT_PARTITION=/dev/sdb5
-
 check_continue "This script installs a base arch system"
 
 #################################################
@@ -99,7 +87,7 @@ mount --mkdir ${EFI_PARTITION} /mnt/boot
 swapon ${SWAP_PARTITION}
 
 echo "Installing arch base system"
-pacstrap -K /mnt base base-devel git linux linux-firmware vim openssh intel-ucode
+pacstrap -K /mnt base base-devel git linux linux-firmware vim openssh amd-ucode
 
 echo "Generating fstab"
 genfstab -U /mnt >> /mnt/etc/fstab
