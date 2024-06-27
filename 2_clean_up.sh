@@ -22,7 +22,7 @@ EOF
 
 check_continue "Cleaning up install scripts and reboot to BIOS"
 
-rm /mnt/2_setup_boot_config.sh
+rm /mnt/setup_boot_config.sh
 rm /mnt/config
 rm /mnt/check_continue
 
