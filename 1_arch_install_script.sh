@@ -87,7 +87,7 @@ mount --mkdir ${EFI_PARTITION} /mnt/boot
 swapon ${SWAP_PARTITION}
 
 echo "Installing arch base system"
-pacstrap -K /mnt base base-devel git linux linux-firmware vim openssh amd-ucode
+pacstrap -K /mnt base base-devel git linux linux-firmware linux-headers vim openssh amd-ucode
 
 echo "Generating fstab"
 genfstab -U /mnt >> /mnt/etc/fstab
